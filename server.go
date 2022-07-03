@@ -19,13 +19,14 @@ func ping(w http.ResponseWriter, _ *http.Request) {
 }
 
 func get(w http.ResponseWriter, r *http.Request) {
-	//userURL := req.URL.Query().Get("url")
+	userURL := r.URL.Query().Get("url")
+	genURL := toDB(userURL)
 	w.Header().Set("Content-Type", "text")
-	genURL, err := json.Marshal(getURL())
+	generatedURL, err := json.Marshal(genURL)
 	if err != nil {
 		log.Panic(err)
 	}
-	_, err = w.Write(genURL)
+	_, err = w.Write(generatedURL)
 	if err != nil {
 		log.Panic(err)
 	}

@@ -60,6 +60,12 @@ func generateURL(n int64) string {
 	return string(b)
 }
 
+func toDB(userURL string) string {
+	generatedURL := getURL()
+	log.Println(userURL)
+	return generatedURL
+}
+
 func main() {
 	server()
 }
