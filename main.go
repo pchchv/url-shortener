@@ -1,7 +1,10 @@
 package main
 
 import (
+	"github.com/joho/godotenv"
+	"log"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -13,6 +16,21 @@ const (
 )
 
 var src = rand.NewSource(time.Now().UnixNano())
+
+func init() {
+	// Load values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Panic("No .env file found")
+	}
+}
+
+func getEnvValue(v string) string {
+	value, exist := os.LookupEnv(v)
+	if !exist {
+		log.Panicf("Value %v does not exist", v)
+	}
+	return value
+}
 
 func getURL() string {
 	n := src.Int63()
