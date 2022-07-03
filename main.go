@@ -61,6 +61,5 @@ func generateURL(n int64) string {
 }
 
 func main() {
-	getURL()
 	server()
 }
