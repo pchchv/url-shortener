@@ -33,12 +33,13 @@ func getEnvValue(v string) string {
 }
 
 func getURL() string {
+	url := getEnvValue("URL")
 	n := src.Int63()
 	for n > 8 {
 		n /= 3
 	}
-	u := generateURL(n)
-	return u
+	url += generateURL(n)
+	return url
 }
 
 func generateURL(n int64) string {
