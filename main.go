@@ -67,5 +67,6 @@ func toDB(userURL string) string {
 }
 
 func main() {
+	db()
 	server()
 }
