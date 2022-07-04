@@ -5,4 +5,5 @@
 URL=example.com/
 HOST=localhost
 PORT=8080
+MONGO=mongodb://localhost:27017
 ```
