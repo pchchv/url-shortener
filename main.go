@@ -62,7 +62,7 @@ func generateURL(n int64) string {
 
 func toDB(userURL string) string {
 	generatedURL := getURL()
-	log.Println(userURL)
+	// TO DO: Send data to the database 
 	return generatedURL
 }
 
