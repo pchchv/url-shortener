@@ -20,5 +20,7 @@ func db() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("Mongo connected!")
+	log.Println("Connected to MongoDB!")
+	collection = client.Database("urls").Collection("url")
+
 }

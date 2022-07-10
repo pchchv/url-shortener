@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"log"
 	"math/rand"
 	"os"
 	"time"
 
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 const (
@@ -17,6 +20,7 @@ const (
 )
 
 var src = rand.NewSource(time.Now().UnixNano())
+var collection *mongo.Collection
 
 func init() {
 	// Load values from .env into the system
@@ -65,8 +69,14 @@ func generateURL(n int64) string {
 	return string(b)
 }
 
-func toDB(userURL string, generatedURL string) {
-	// TO DO: Send data to the database
+func toDB(userURL string, generatedURL string) error {
+	url := bson.D{{Key: "userURL", Value: userURL}, {Key: "generatedURL", Value: generatedURL}}
+	result, err := collection.InsertOne(context.TODO(), url)
+	if err != nil {
+		return err
+	}
+	log.Println(result.InsertedID)
+	return nil
 }
 
 func main() {
