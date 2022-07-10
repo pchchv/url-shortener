@@ -79,6 +79,19 @@ func toDB(userURL string, generatedURL string) error {
 	return nil
 }
 
+func fromDB(url string) string {
+	res, err := collection.Find(context, bson.M{"generatedURL": url})
+	if err != nil {
+		log.Panic(err)
+	}
+	var urls []bson.M
+	if err = res.All(context, &urls); err != nil {
+		log.Panic(err)
+	}
+	log.Println(urls)
+	return url
+}
+
 func main() {
 	db()
 	server()
