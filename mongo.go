@@ -2,20 +2,23 @@ package main
 
 import (
 	"context"
+	"log"
+	"time"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"log"
 )
 
 func db() {
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(getEnvValue("MONGO")))
+	serverAPIOptions := options.ServerAPI(options.ServerAPIVersion1)
+	clientOptions := options.Client().
+		ApplyURI(getEnvValue("MONGO")).
+		SetServerAPIOptions(serverAPIOptions)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
 	}
-	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
-		log.Panic(err)
-	} else {
-		log.Println("Mongo connected!")
-	}
+	log.Println("Mongo connected!")
 }

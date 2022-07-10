@@ -70,6 +70,6 @@ func toDB(userURL string, generatedURL string) {
 }
 
 func main() {
-	// db()
+	db()
 	server()
 }
