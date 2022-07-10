@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"math/rand"
 	"os"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 const (
@@ -32,13 +33,17 @@ func getEnvValue(v string) string {
 	return value
 }
 
-func getURL() string {
+func getURL(userInput string) string {
 	url := getEnvValue("URL")
-	n := src.Int63()
-	for n > 8 {
-		n /= 3
+	if userInput != "" {
+		url += userInput
+	} else {
+		n := src.Int63()
+		for n > 8 {
+			n /= 3
+		}
+		url += generateURL(n)
 	}
-	url += generateURL(n)
 	return url
 }
 
@@ -60,13 +65,11 @@ func generateURL(n int64) string {
 	return string(b)
 }
 
-func toDB(userURL string) string {
-	generatedURL := getURL()
-	// TO DO: Send data to the database 
-	return generatedURL
+func toDB(userURL string, generatedURL string) {
+	// TO DO: Send data to the database
 }
 
 func main() {
-	db()
+	// db()
 	server()
 }

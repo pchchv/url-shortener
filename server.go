@@ -18,9 +18,11 @@ func ping(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func get(w http.ResponseWriter, r *http.Request) {
+func post(w http.ResponseWriter, r *http.Request) {
 	userURL := r.URL.Query().Get("url")
-	genURL := toDB(userURL)
+	userInput := r.URL.Query().Get("input")
+	genURL := getURL(userInput)
+	toDB(userURL, genURL)
 	w.Header().Set("Content-Type", "text")
 	generatedURL, err := json.Marshal(genURL)
 	if err != nil {
@@ -36,6 +38,6 @@ func server() {
 	port := getEnvValue("PORT")
 	log.Println("Server started!")
 	http.HandleFunc("/ping", ping)
-	http.HandleFunc("/", get)
+	http.HandleFunc("/", post)
 	log.Fatal(http.ListenAndServe(host+":"+port, nil))
 }
