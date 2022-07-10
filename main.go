@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
@@ -80,16 +81,15 @@ func toDB(userURL string, generatedURL string) error {
 }
 
 func fromDB(url string) string {
-	res, err := collection.Find(context, bson.M{"generatedURL": url})
+	res, err := collection.Find(context.TODO(), bson.M{"generatedURL": url})
 	if err != nil {
 		log.Panic(err)
 	}
 	var urls []bson.M
-	if err = res.All(context, &urls); err != nil {
+	if err = res.All(context.TODO(), &urls); err != nil {
 		log.Panic(err)
 	}
-	log.Println(urls)
-	return url
+	return fmt.Sprintf("%v", urls[0]["userURL"])
 }
 
 func main() {
