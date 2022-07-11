@@ -7,7 +7,7 @@ import (
 )
 
 func ping(w http.ResponseWriter, _ *http.Request) {
-	r, err := json.Marshal("URL-shortening Service. Version 0.2")
+	r, err := json.Marshal("URL-shortening Service. Version 1.0")
 	if err != nil {
 		log.Panic(err)
 	}
