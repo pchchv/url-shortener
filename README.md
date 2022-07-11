@@ -1,4 +1,8 @@
 # url-shortener — HTTP service for URL shortening 
+# Running the application
+```
+docker-compose up --build
+```
 ### Running the application without Docker
 ```
 go run .
