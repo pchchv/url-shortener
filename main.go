@@ -49,7 +49,10 @@ func getURL(userInput string) string {
 		}
 		url += generateURL(n)
 	}
-	return url
+	if checURL(url) {
+		return url
+	}
+	return getURL(userInput)
 }
 
 func generateURL(n int64) string {
@@ -68,6 +71,14 @@ func generateURL(n int64) string {
 	}
 
 	return string(b)
+}
+
+func checURL(url string) bool {
+	check := fromDB(url, "generatedURL")
+	if check == "URL not found" {
+		return true
+	}
+	return false
 }
 
 func toDB(userURL string, generatedURL string) error {
