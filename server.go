@@ -21,9 +21,15 @@ func ping(w http.ResponseWriter, _ *http.Request) {
 func post(w http.ResponseWriter, r *http.Request) {
 	userURL := r.URL.Query().Get("url")
 	userInput := r.URL.Query().Get("input")
-	genURL := getURL(userInput)
-	if err := toDB(userURL, genURL); err != nil {
-		log.Panic(err)
+	var genURL string
+	u := fromDB(userURL, "userURL")
+	if u == "URL not found" {
+		genURL = getURL(userInput)
+		if err := toDB(userURL, genURL); err != nil {
+			log.Panic(err)
+		}
+	} else {
+		genURL = u
 	}
 	w.Header().Set("Content-Type", "text")
 	generatedURL, err := json.Marshal(genURL)
@@ -38,7 +44,7 @@ func post(w http.ResponseWriter, r *http.Request) {
 
 func get(w http.ResponseWriter, r *http.Request) {
 	url := r.URL.Query().Get("url")
-	url = fromDB(url)
+	url = fromDB(url, "generatedURL")
 	res, err := json.Marshal(url)
 	if err != nil {
 		log.Panic(err)

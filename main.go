@@ -80,8 +80,9 @@ func toDB(userURL string, generatedURL string) error {
 	return nil
 }
 
-func fromDB(url string) string {
-	res, err := collection.Find(context.TODO(), bson.M{"generatedURL": url})
+func fromDB(url string, urlType string) string {
+	var reqURL string
+	res, err := collection.Find(context.TODO(), bson.M{urlType: url})
 	if err != nil {
 		log.Panic(err)
 	}
@@ -89,7 +90,15 @@ func fromDB(url string) string {
 	if err = res.All(context.TODO(), &urls); err != nil {
 		log.Panic(err)
 	}
-	return fmt.Sprintf("%v", urls[0]["userURL"])
+	if urls == nil {
+		return "URL not found"
+	}
+	if urlType == "userURL" {
+		reqURL = "generatedURL"
+	} else if urlType == "generatedURL" {
+		reqURL = "userURL"
+	}
+	return fmt.Sprintf("%v", urls[0][reqURL])
 }
 
 func main() {
