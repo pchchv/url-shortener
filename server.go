@@ -24,9 +24,13 @@ func post(w http.ResponseWriter, r *http.Request) {
 	var genURL string
 	u := fromDB(userURL, "userURL")
 	if u == "URL not found" {
-		genURL = getURL(userInput)
-		if err := toDB(userURL, genURL); err != nil {
-			log.Panic(err)
+		if checkURL(userURL) {
+			genURL = getURL(userInput)
+			if err := toDB(userURL, genURL); err != nil {
+				log.Panic(err)
+			}
+		} else {
+			genURL = "Invalid URL"
 		}
 	} else {
 		genURL = u

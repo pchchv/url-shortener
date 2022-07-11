@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -49,7 +51,7 @@ func getURL(userInput string) string {
 		}
 		url += generateURL(n)
 	}
-	if checURL(url) {
+	if checGenerateURL(url) {
 		return url
 	}
 	return getURL(userInput)
@@ -73,7 +75,21 @@ func generateURL(n int64) string {
 	return string(b)
 }
 
-func checURL(url string) bool {
+func checkURL(url string) bool {
+	if !(strings.HasPrefix(url, "http")) {
+		url = "http://" + url
+	}
+	res, err := http.Get(url)
+	if err != nil {
+		log.Panic(err)
+	}
+	if res.StatusCode != http.StatusOK {
+		return false
+	}
+	return true
+}
+
+func checGenerateURL(url string) bool {
 	check := fromDB(url, "generatedURL")
 	if check == "URL not found" {
 		return true
